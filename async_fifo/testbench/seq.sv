@@ -41,9 +41,8 @@ class SequenceSource #(W=7);
         read_durations = new[this.segments];
     endfunction
 
-    function void randomizeAll();
+    function void randomizeData();
         int rtot;
-        assert(randomize());
         total = 0;
         foreach(write_durations[i]) begin
             if((i & 1) == 0)
@@ -66,15 +65,17 @@ class SequenceSource #(W=7);
 
     task writeAll(AbstractWriter #(W) writer);
         int index = 0;
+        int dur;
         foreach(write_durations[i]) begin
+            dur = write_durations[i];
             if((i & 1) == 0) begin
-                for(int step = 0; step < write_durations[i]; step++) begin
+                for(int step = 0; step < dur; step++) begin
                     writer.write(data.data[index]);
                     $display("Write %d = %h", index, data.data[index]);
                     index++;
                 end
             end else begin 
-                writer.waitFor(write_durations[i]);
+                writer.waitFor(dur);
             end
         end
     endtask

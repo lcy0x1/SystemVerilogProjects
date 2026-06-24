@@ -15,7 +15,7 @@ module wrapper #(P=2, W=7) (
     fifo_bus.dut bus
 );
 
-async_fifo #(P,W) fifo(bus.rst_n, bus.clk_w, bus.wen, bus.clk_r, bus.ren, bus.din, bus.dout, bus.full, bus.empty);
+async_fifo #(P,W) fifo(bus.rst_n, bus.clk_w, bus.wen, bus.clk_r, bus.ren, bus.din, bus.dout, bus.full, bus.empty, bus.near_full, bus.near_empty);
 
 endmodule
 
@@ -35,7 +35,7 @@ always #(TR/2) clk_r = ~clk_r;
 fifo_bus #(W) intf(rst_n, clk_w, clk_r);
 wrapper #(P,W) dut(intf.dut);
 
-SequenceSource #(W) source = new(1, 30, 30);
+SequenceSource #(W) source = new(3, 30, 30);
 Verifier #(W) verifier = new(source);
 Writer #(W) writer = new(intf);
 Reader #(W) reader = new(intf);
@@ -47,7 +47,14 @@ initial begin
 end
 
 initial begin
-    source.randomizeAll();
+    //assert(source.randomize());
+    source.write_durations[0] = 30;
+    source.write_durations[1] = 30;
+    source.write_durations[2] = 30;
+    source.read_durations[0] = 0;
+    source.read_durations[1] = 30;
+    source.read_durations[2] = 60;
+    source.randomizeData();
     $display("Total Data: %d", source.total);
 
     #1 
@@ -61,7 +68,7 @@ initial begin
         begin
             fork
                 source.writeAll(writer);
-                //verifier.readAll(reader);
+                verifier.readAll(reader);
             join
             $display("Data transfer complete");
             $finish(2);

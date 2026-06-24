@@ -32,7 +32,7 @@ class Verifier #(W=7);
                     end
                     index++;
                 end
-            end else begin 
+            end else if(source.read_durations[i] > 0) begin 
                 reader.waitFor(source.read_durations[i]);
             end
         end
