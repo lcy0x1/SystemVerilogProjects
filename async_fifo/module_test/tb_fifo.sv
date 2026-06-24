@@ -35,8 +35,8 @@ always #(TR/2) clk_r = ~clk_r;
 fifo_bus #(W) intf(rst_n, clk_w, clk_r);
 wrapper #(P,W) dut(intf.dut);
 
-SequenceSource #(W) source = new(3, 30, 30);
-Verifier #(W) verifier = new(source);
+SequenceSource #(W) source = new(100, 5, 30);
+Verifier #(W) verifier;
 Writer #(W) writer = new(intf);
 Reader #(W) reader = new(intf);
 
@@ -47,14 +47,9 @@ initial begin
 end
 
 initial begin
-    //assert(source.randomize());
-    source.write_durations[0] = 30;
-    source.write_durations[1] = 30;
-    source.write_durations[2] = 30;
-    source.read_durations[0] = 0;
-    source.read_durations[1] = 30;
-    source.read_durations[2] = 60;
+    assert(source.randomize());
     source.randomizeData();
+    verifier = new(source);
     $display("Total Data: %d", source.total);
 
     #1 
@@ -74,7 +69,7 @@ initial begin
             $finish(2);
         end
         begin
-            #10000 $display("Data transfer failed");
+            #(100000) $display("Data transfer failed");
             $finish(2);
         end
     join

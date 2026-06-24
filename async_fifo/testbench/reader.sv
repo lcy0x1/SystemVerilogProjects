@@ -8,14 +8,19 @@ class Reader #(W=7) extends AbstractReader #(W);
         this.bus = bus;
     endfunction
 
-    virtual task read(output bit[W:0] data);
+    virtual task read(Receiver #(W) dst);
         bit isEmpty;
         while(1) begin
             @(posedge bus.clk_r);
             isEmpty = bus.ren & bus.near_empty | bus.empty;
             if(!isEmpty) begin
-                data <= bus.dout;
                 bus.ren <= 1;
+                fork
+                    begin
+                        @(posedge bus.clk_r);
+                        dst.accept(bus.dout);
+                    end
+                join_none;
                 break;
             end else begin
                 bus.ren <= 0;
