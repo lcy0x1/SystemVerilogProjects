@@ -1,14 +1,13 @@
-`timescale 1ns / 1ps
-`include "async_fifo/dut/grey.v"
-`include "async_fifo/dut/synchronizer.v"
-`include "async_fifo/dut/handler.v"
-`include "async_fifo/dut/buffer.v"
-`include "async_fifo/dut/async_fifo.v"
-`include "async_fifo/testbench/bus.sv"
-`include "async_fifo/testbench/seq.sv"
-`include "async_fifo/testbench/verifier.sv"
-`include "async_fifo/testbench/writer.sv"
-`include "async_fifo/testbench/reader.sv"
+`include "dut/grey.v"
+`include "dut/synchronizer.v"
+`include "dut/handler.v"
+`include "dut/buffer.v"
+`include "dut/async_fifo.v"
+`include "testbench/bus.sv"
+`include "testbench/seq.sv"
+`include "testbench/verifier.sv"
+`include "testbench/writer.sv"
+`include "testbench/reader.sv"
 `default_nettype none
 
 module wrapper #(P=2, W=7) (
@@ -69,7 +68,7 @@ initial begin
             $finish(2);
         end
         begin
-            #(100000) $display("Data transfer failed");
+            #((source.wtime*TW + source.rtime*TR + TW + TR)*2) $display("Data transfer failed");
             $finish(2);
         end
     join

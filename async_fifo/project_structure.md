@@ -4,6 +4,8 @@
 
 `verilator --Wno-WIDTHTRUNC --binary async_fifo/module_test/tb_fifo.sv  --trace`
 
+`verilator --Wno-WIDTHTRUNC --binary -j 4 +incdir+$UVM_HOME +define+UVM_NO_DPI $UVM_HOME/uvm_pkg.sv +incdir+$(pwd)/async_fifo your_design_files.sv`
+
 ## DUT
 
 This FIFO has a write pointer handler, read pointer handler, buffer.

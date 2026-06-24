@@ -27,7 +27,7 @@ class SequenceSource #(W=7);
     rand int write_durations[];
     rand int read_durations[];
 
-    int total;
+    int total, wtime, rtime;
     SequenceData #(W) data;
 
     constraint wr {foreach(write_durations[i]) write_durations[i] inside {[min:max]}; }
@@ -59,6 +59,10 @@ class SequenceSource #(W=7);
             write_durations[segments-1] += rtot - total;
             total = rtot;
         end
+        wtime = 0;
+        rtime = 0;
+        foreach(write_durations[i]) wtime += write_durations[i];
+        foreach(read_durations[i]) rtime += read_durations[i];
         data = new(total);
         assert(data.randomize());
     endfunction

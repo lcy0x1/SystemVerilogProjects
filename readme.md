@@ -1,5 +1,10 @@
 # System Verilog Projects
 
+## Project Requirements
+- Verilator
+- Z3
+- Surfer
+
 ## Async FIFO
 
 ### Non-UVM random testing
