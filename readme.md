@@ -1,5 +1,13 @@
-# compile
-verilator testbench.sv seq_det_101.sv -binary --trace
+# System Verilog Projects
 
-# execute
-./obj_dir/Vtestbench
+## Async FIFO
+
+### Non-UVM random testing
+
+Compile:
+
+`verilator --Wno-WIDTHTRUNC --binary async_fifo/module_test/tb_fifo.sv  --trace`
+
+Execute:
+
+`./obj_dir/Vtb_fifo`
