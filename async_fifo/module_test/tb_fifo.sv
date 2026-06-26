@@ -68,11 +68,10 @@ initial begin
             $finish(2);
         end
         begin
-            #((source.wtime*TW + source.rtime*TR + TW + TR)*2) $display("Data transfer failed");
+            #((source.wtime*TW + source.rtime*TR)*3) $display("Data transfer time out");
             $finish(2);
         end
     join
-    
     
 end
 
