@@ -68,6 +68,7 @@ class ReadMonitor #(W=7) extends AbstractMonitor #(W, ReadTransaction #(W));
             if(tr[1] != null) begin
                 if(tr[1].ren) begin
                     tr[1].data = vif.dout;
+                    `uvm_info(get_name(), $sformatf("Received %h", tr[1].data), UVM_LOW)
                 end
                 analysis_port.write(tr[1]);
             end
