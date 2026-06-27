@@ -1,4 +1,4 @@
-virtual class AbstractMonitor #(T) extends uvm_monitor;
+virtual class AbstractMonitor #(type T = uvm_sequence_item) extends uvm_monitor;
 
     `uvm_component_abstract_param_utils(AbstractMonitor)
 
@@ -48,9 +48,9 @@ class WriteMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
 
 endclass
 
-class ReadMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
+class ReadMonitor #(W=7) extends AbstractMonitor #(ReadTransaction #(W));
 
-    `uvm_component_param_utils(WriteMonitor)
+    `uvm_component_param_utils(ReadMonitor)
 
     typedef ReadTransaction #(W) RTX;
 
@@ -65,9 +65,9 @@ class ReadMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
             tr[1] = tr[0];
             tr[0] = RTX::type_id::create("tr", this);
             if (vif.ren) begin
-                tr[0].wen = 1;
+                tr[0].ren = 1;
             end else begin
-                tr[0].wen = 0;
+                tr[0].ren = 0;
             end
             if(tr[1].ren) begin
                 tr[1].data = vif.dout;

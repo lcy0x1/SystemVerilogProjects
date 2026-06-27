@@ -1,3 +1,17 @@
+class ResetTransaction extends uvm_sequence_item;
+
+    bit rst_n;
+
+    `uvm_object_utils_begin(ResetTransaction)
+        `uvm_field_int(rst_n, UVM_ALL_ON)
+    `uvm_object_utils_end
+
+    function new(string name = "rst");
+        super.new(name);
+    endfunction
+
+endclass
+
 class WriteTransaction #(W=7) extends uvm_sequence_item;
 
     rand bit wen;
@@ -11,8 +25,8 @@ class WriteTransaction #(W=7) extends uvm_sequence_item;
     }
 
     `uvm_object_param_utils_begin(WriteTransaction)
-        `uvm_field_int(wen)
-        `uvm_field_int(data)
+        `uvm_field_int(wen, UVM_ALL_ON)
+        `uvm_field_int(data, UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "wt");
@@ -29,8 +43,8 @@ class ReadTransaction #(W=7) extends uvm_sequence_item;
     constraint re {ren dist {0:=50, 1:=50};}
 
     `uvm_object_param_utils_begin(ReadTransaction)
-        `uvm_field_int(ren)
-        `uvm_field_int(data)
+        `uvm_field_int(ren, UVM_ALL_ON)
+        `uvm_field_int(data, UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "rt");

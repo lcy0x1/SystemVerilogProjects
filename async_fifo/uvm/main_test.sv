@@ -2,7 +2,9 @@ class main_test extends uvm_test;
 
     `uvm_component_utils(main_test)
 
-    main_env env;
+    parameter W = 7;
+
+    Environment #(W) env;
 
     function new(string name, uvm_component parent = null);
         super.new(name, parent);
@@ -10,11 +12,20 @@ class main_test extends uvm_test;
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        env = main_env::type_id::create("env", this);
+        env = Environment#(W)::type_id::create("env", this);
     endfunction
 
     virtual function void end_of_elaboration_phase(uvm_phase phase);
 		uvm_top.print_topology();
 	endfunction
+
+    virtual task run_phase(uvm_phase phase);
+        VirtualSequence #(W) seq = VirtualSequence#(W)::type_id::create("vir_seq");
+        //TODO configure seq
+        
+        phase.raise_objection(this);
+        env.runSequence(seq);
+        phase.drop_objection(this);
+    endtask
 
 endclass

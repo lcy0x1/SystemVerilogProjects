@@ -1,5 +1,5 @@
 DIR = async_fifo
-FLAGS = --Wno-WIDTHTRUNC --sched-zero-delay --timescale 1ns/1ps --binary +incdir+$(DIR)
+FLAGS = --Wno-WIDTHTRUNC --Wno-WIDTHEXPAND --sched-zero-delay --timescale 1ns/1ps --binary +incdir+$(DIR)
 UVM = +incdir+uvm/src +define+UVM_NO_DPI uvm/src/uvm_pkg.sv
 
 all:
@@ -10,4 +10,4 @@ run:
 
 .PHONY: uvm
 uvm:
-	OBJCACHE=ccache verilator -j 4  $(FLAGS) $(UVM) $(DIR)/uvm/tb_top.sv --top-module tb_top
+	OBJCACHE=ccache verilator -j 4 $(FLAGS) $(UVM) $(DIR)/uvm/tb_top.sv --top-module tb_top
