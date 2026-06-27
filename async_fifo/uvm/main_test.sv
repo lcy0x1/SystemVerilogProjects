@@ -2,7 +2,7 @@ class main_test extends uvm_test;
 
     `uvm_component_utils(main_test)
 
-    parameter W = 15;
+    parameter W = `WIDTH;
 
     Environment #(W) env;
 
@@ -21,7 +21,7 @@ class main_test extends uvm_test;
 
     virtual task run_phase(uvm_phase phase);
         VirtualSequence #(W) seq = VirtualSequence#(W)::type_id::create("vir_seq");
-        //TODO configure seq
+        seq.conf.count = 10;
         
         phase.raise_objection(this);
         env.runSequence(seq);

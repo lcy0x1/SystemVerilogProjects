@@ -14,6 +14,8 @@ import uvm_pkg::*;
 `include "uvm/agent.sv"
 `include "uvm/scoreboard.sv"
 `include "uvm/env.sv"
+
+`define WIDTH 15
 `include "uvm/main_test.sv"
 
 module wrapper #(P=2, W=7) (
@@ -27,7 +29,7 @@ endmodule
 module tb_top;
 
 	parameter P = 3;
-	parameter W = 15;
+	parameter W = `WIDTH;
 
 	localparam TW = 10, TR = 8;
 
@@ -40,7 +42,7 @@ module tb_top;
 	wrapper #(P,W) dut(intf.dut);
 
 	initial begin
-		uvm_config_db #(virtual fifo_bus #(W))::set(null, "uvm_test_top", "vif", intf);
+		uvm_config_db #(virtual fifo_bus #(W))::set(null, "uvm_test_top.*", "vif", intf);
 		run_test("main_test");
 	end
 

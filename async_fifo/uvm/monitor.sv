@@ -2,7 +2,7 @@ virtual class AbstractMonitor #(W=7, type T = uvm_sequence_item) extends uvm_mon
 
     `uvm_component_abstract_param_utils(AbstractMonitor#(W,T))
 
-    virtual fifo_bus vif;
+    virtual fifo_bus #(W) vif;
 
     uvm_analysis_port #(T) analysis_port;
 
@@ -65,10 +65,12 @@ class ReadMonitor #(W=7) extends AbstractMonitor #(W, ReadTransaction #(W));
             end else begin
                 tr[0].ren = 0;
             end
-            if(tr[1].ren) begin
-                tr[1].data = vif.dout;
+            if(tr[1] != null) begin
+                if(tr[1].ren) begin
+                    tr[1].data = vif.dout;
+                end
+                analysis_port.write(tr[1]);
             end
-            analysis_port.write(tr[1]);
         end
     endtask
 
