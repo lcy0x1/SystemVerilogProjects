@@ -1,0 +1,79 @@
+virtual class AbstractMonitor #(T) extends uvm_monitor;
+
+    `uvm_component_abstract_param_utils(AbstractMonitor)
+
+    virtual fifo_bus vif;
+
+    uvm_analysis_port #(T) analysis_port;
+
+    function new(string name, uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    virtual function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if (!uvm_config_db #(virtual fifo_bus)::get(this, "", "vif", vif)) begin
+            `uvm_error(get_type_name(), "Didn't get handle to virtual interface fifo_bus")
+        end
+        analysis_port = new("analysis_port", this);
+    endfunction
+
+endclass
+
+class WriteMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
+
+    `uvm_component_param_utils(WriteMonitor)
+
+    typedef WriteTransaction #(W) WTX;
+
+    function new(string name, uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    virtual task run_phase(uvm_phase phase);
+        WTX tr;
+
+        forever begin
+            @(posedge vif.clk_w);
+            tr = WTX::type_id::create("tr", this);
+            if (vif.wen) begin
+                tr.wen = 1;
+                tr.data = vif.din;
+            end else begin
+                tr.wen = 0;
+            end
+            analysis_port.write(tr);
+        end
+    endtask
+
+endclass
+
+class ReadMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
+
+    `uvm_component_param_utils(WriteMonitor)
+
+    typedef ReadTransaction #(W) RTX;
+
+    function new(string name, uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    virtual task run_phase(uvm_phase phase);
+        RTX tr[2];
+        forever begin
+            @(posedge vif.clk_r);
+            tr[1] = tr[0];
+            tr[0] = RTX::type_id::create("tr", this);
+            if (vif.ren) begin
+                tr[0].wen = 1;
+            end else begin
+                tr[0].wen = 0;
+            end
+            if(tr[1].ren) begin
+                tr[1].data = vif.dout;
+            end
+            analysis_port.write(tr[1]);
+        end
+    endtask
+
+endclass

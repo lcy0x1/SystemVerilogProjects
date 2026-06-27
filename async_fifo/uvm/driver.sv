@@ -1,8 +1,8 @@
-class AbstractDriver #(T) extends uvm_driver #(T);
+virtual class AbstractDriver #(T) extends uvm_driver #(T);
 
     `uvm_component_abstract_param_utils(AbstractDriver)
 
-    virtual reg_if vif;
+    virtual fifo_bus vif;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -10,8 +10,8 @@ class AbstractDriver #(T) extends uvm_driver #(T);
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!uvm_config_db #(virtual reg_if)::get(this, "", "vif", vif)) begin
-            `uvm_fatal(get_type_name(), "Didn't get handle to virtual interface reg_if")
+        if (!uvm_config_db #(virtual fifo_bus)::get(this, "", "vif", vif)) begin
+            `uvm_fatal(get_type_name(), "Didn't get handle to virtual interface fifo_bus")
         end
     endfunction
     
