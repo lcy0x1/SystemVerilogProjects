@@ -1,0 +1,40 @@
+class WriteTransaction #(W=7) extends uvm_sequence_item;
+
+    rand bit wen;
+    rand bit[W:0] data;
+
+    constraint we {wen dist {0:=30, 1:=70}}
+
+    constraint wd {
+        solve wen before data;
+        if(!wen) data = 0;
+    }
+
+    `uvm_object_param_utils_begin(WriteTransaction)
+        `uvm_field_int(wen)
+        `uvm_field_int(data)
+    `uvm_object_utils_end
+
+    function new(String name = "wt");
+        super.new(name);
+    endfunction
+
+endclass
+
+class ReadTransaction #(W=7) extends uvm_sequence_item;
+
+    rand bit ren;
+    bit[W:0] data;
+
+    constraint re {wen dist {0:=50, 1:=50}}
+
+    `uvm_object_param_utils_begin(ReadTransaction)
+        `uvm_field_int(ren)
+        `uvm_field_int(data)
+    `uvm_object_utils_end
+
+    function new(String name = "rt");
+        super.new(name);
+    endfunction
+
+endclass

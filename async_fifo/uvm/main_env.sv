@@ -6,7 +6,7 @@ class main_env extends uvm_env;
 		super.new(name, parent);
 	endfunction
 
-	function void build_phase (uvm_phase phase);
+	function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 	endfunction
 
