@@ -24,7 +24,7 @@ class WriteTransaction #(W=7) extends uvm_sequence_item;
         if(!wen) data == 0;
     }
 
-    `uvm_object_param_utils_begin(WriteTransaction)
+    `uvm_object_param_utils_begin(WriteTransaction#(W))
         `uvm_field_int(wen, UVM_ALL_ON)
         `uvm_field_int(data, UVM_ALL_ON)
     `uvm_object_utils_end
@@ -42,7 +42,7 @@ class ReadTransaction #(W=7) extends uvm_sequence_item;
 
     constraint re {ren dist {0:=50, 1:=50};}
 
-    `uvm_object_param_utils_begin(ReadTransaction)
+    `uvm_object_param_utils_begin(ReadTransaction#(W))
         `uvm_field_int(ren, UVM_ALL_ON)
         `uvm_field_int(data, UVM_ALL_ON)
     `uvm_object_utils_end

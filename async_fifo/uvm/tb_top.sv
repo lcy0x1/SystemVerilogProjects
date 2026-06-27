@@ -27,7 +27,7 @@ endmodule
 module tb_top;
 
 	parameter P = 3;
-	parameter W = 7;
+	parameter W = 15;
 
 	localparam TW = 10, TR = 8;
 

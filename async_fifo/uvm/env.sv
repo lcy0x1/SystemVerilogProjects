@@ -13,7 +13,7 @@ endclass
 
 class Environment #(W=7) extends AbstractEnv;
 
-    `uvm_component_param_utils(Environment)
+    `uvm_component_param_utils(Environment#(W))
 
 	ResetAgent #(W) rst_ctrl;
 	WriteAgent #(W) writer;

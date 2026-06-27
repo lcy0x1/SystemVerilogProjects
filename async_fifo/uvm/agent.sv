@@ -1,6 +1,6 @@
 virtual class WriteAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(WriteAgent)
+    `uvm_component_param_utils(WriteAgent#(W))
 
     WriteDriver #(W) driver;
     WriteMonitor #(W) monitor;
@@ -32,7 +32,7 @@ endclass
 
 virtual class ReadAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(ReadAgent)
+    `uvm_component_param_utils(ReadAgent#(W))
 
     ReadDriver #(W) driver;
     ReadMonitor #(W) monitor;
@@ -63,7 +63,7 @@ endclass
 
 virtual class ResetAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(ResetAgent)
+    `uvm_component_param_utils(ResetAgent#(W))
 
     ResetDriver #(W) driver;
     ResetSequencer sequencer;

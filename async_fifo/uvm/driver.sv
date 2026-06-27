@@ -1,6 +1,6 @@
 virtual class AbstractDriver #(W = 7, type T = uvm_sequence_item) extends uvm_driver #(T);
 
-    `uvm_component_abstract_param_utils(AbstractDriver)
+    `uvm_component_abstract_param_utils(AbstractDriver#(W,T))
 
     virtual fifo_bus #(W) vif;
 
@@ -19,7 +19,7 @@ endclass
 
 class WriteDriver #(W=7) extends AbstractDriver #(W, WriteTransaction #(W));
 
-    `uvm_component_param_utils(WriteDriver)
+    `uvm_component_param_utils(WriteDriver#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -56,7 +56,7 @@ endclass
 
 class ReadDriver #(W=7) extends AbstractDriver #(W, ReadTransaction #(W));
 
-    `uvm_component_param_utils(ReadDriver)
+    `uvm_component_param_utils(ReadDriver#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -91,7 +91,7 @@ endclass
 
 class ResetDriver #(W=7) extends AbstractDriver #(W, ResetTransaction);
 
-    `uvm_component_param_utils(ResetDriver)
+    `uvm_component_param_utils(ResetDriver#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);

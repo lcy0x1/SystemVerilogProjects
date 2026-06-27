@@ -3,7 +3,7 @@
 
 class Scoreboard #(W=7) extends uvm_scoreboard;
 
-    `uvm_component_param_utils(Scoreboard)
+    `uvm_component_param_utils(Scoreboard#(W))
 
     uvm_analysis_imp_wt #(WriteTransaction #(W), Scoreboard #(W)) wt_imp;
     uvm_analysis_imp_rt #(ReadTransaction #(W), Scoreboard #(W)) rt_imp;

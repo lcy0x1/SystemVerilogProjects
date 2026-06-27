@@ -6,9 +6,7 @@ endclass
 
 class WriteSequence #(W=7) extends uvm_sequence #(WriteTransaction #(W));
     
-    `uvm_object_param_utils(WriteSequence)
-
-    typedef WriteTransaction #(W) WTX;
+    `uvm_object_param_utils(WriteSequence#(W))
     
     Counter counter;
     int count;
@@ -19,13 +17,13 @@ class WriteSequence #(W=7) extends uvm_sequence #(WriteTransaction #(W));
 
     virtual task body();
         while (counter.count > count) begin
-            req = WTX::type_id::create("write_tx");
+            req = WriteTransaction#(W)::type_id::create("write_tx");
             start_item(req);
             assert(req.randomize());
             if(req.wen) count ++;
             finish_item(req);
         end
-        req = WTX::type_id::create("write_tx");
+        req = WriteTransaction#(W)::type_id::create("write_tx");
         start_item(req);
         finish_item(req);
     endtask
@@ -34,9 +32,7 @@ endclass
 
 class ReadSequence #(W=7) extends uvm_sequence #(ReadTransaction #(W));
     
-    `uvm_object_param_utils(ReadSequence)
-
-    typedef ReadTransaction #(W) RTX;
+    `uvm_object_param_utils(ReadSequence#(W))
 
     Counter counter;
     int count;
@@ -47,13 +43,13 @@ class ReadSequence #(W=7) extends uvm_sequence #(ReadTransaction #(W));
 
     virtual task body();
         while (counter.count > count) begin
-            req = RTX::type_id::create("read_tx");
+            req = ReadTransaction#(W)::type_id::create("read_tx");
             start_item(req);
             assert(req.randomize());
             if(req.ren) count ++;
             finish_item(req);
         end
-        req = RTX::type_id::create("read_tx");
+        req = ReadTransaction#(W)::type_id::create("read_tx");
         start_item(req);
         finish_item(req);
     endtask
@@ -95,8 +91,8 @@ endclass
 
 class VirtualSequence #(W=7) extends RootSequence;
 
-    `uvm_object_param_utils(VirtualSequence)
-    `uvm_declare_p_sequencer(VirtualSequencer)
+    `uvm_object_param_utils(VirtualSequence#(W))
+    `uvm_declare_p_sequencer(VirtualSequencer#(W))
 
     function new(string name = "root_sequence");
         super.new(name);

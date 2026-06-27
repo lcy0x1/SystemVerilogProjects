@@ -1,6 +1,6 @@
 class WriteSequencer #(W=7) extends uvm_sequencer #(WriteTransaction #(W));
 
-    `uvm_component_param_utils(WriteSequencer)
+    `uvm_component_param_utils(WriteSequencer#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -10,7 +10,7 @@ endclass
 
 class ReadSequencer #(W=7) extends uvm_sequencer #(ReadTransaction #(W));
 
-    `uvm_component_param_utils(ReadSequencer)
+    `uvm_component_param_utils(ReadSequencer#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -34,7 +34,7 @@ class VirtualSequencer #(W=7) extends uvm_sequencer;
     WriteSequencer #(W) wseq;
     ReadSequencer #(W) rseq;
 
-    `uvm_component_param_utils(VirtualSequencer)
+    `uvm_component_param_utils(VirtualSequencer#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);

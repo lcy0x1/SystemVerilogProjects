@@ -1,6 +1,6 @@
-virtual class AbstractMonitor #(type T = uvm_sequence_item) extends uvm_monitor;
+virtual class AbstractMonitor #(W=7, type T = uvm_sequence_item) extends uvm_monitor;
 
-    `uvm_component_abstract_param_utils(AbstractMonitor)
+    `uvm_component_abstract_param_utils(AbstractMonitor#(W,T))
 
     virtual fifo_bus vif;
 
@@ -12,7 +12,7 @@ virtual class AbstractMonitor #(type T = uvm_sequence_item) extends uvm_monitor;
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!uvm_config_db #(virtual fifo_bus)::get(this, "", "vif", vif)) begin
+        if (!uvm_config_db #(virtual fifo_bus #(W))::get(this, "", "vif", vif)) begin
             `uvm_error(get_type_name(), "Didn't get handle to virtual interface fifo_bus")
         end
         analysis_port = new("analysis_port", this);
@@ -20,22 +20,20 @@ virtual class AbstractMonitor #(type T = uvm_sequence_item) extends uvm_monitor;
 
 endclass
 
-class WriteMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
+class WriteMonitor #(W=7) extends AbstractMonitor #(W, WriteTransaction #(W));
 
-    `uvm_component_param_utils(WriteMonitor)
-
-    typedef WriteTransaction #(W) WTX;
+    `uvm_component_param_utils(WriteMonitor#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        WTX tr;
+        WriteTransaction#(W) tr;
 
         forever begin
             @(posedge vif.clk_w);
-            tr = WTX::type_id::create("tr", this);
+            tr = WriteTransaction#(W)::type_id::create("tr", this);
             if (vif.wen) begin
                 tr.wen = 1;
                 tr.data = vif.din;
@@ -48,22 +46,20 @@ class WriteMonitor #(W=7) extends AbstractMonitor #(WriteTransaction #(W));
 
 endclass
 
-class ReadMonitor #(W=7) extends AbstractMonitor #(ReadTransaction #(W));
+class ReadMonitor #(W=7) extends AbstractMonitor #(W, ReadTransaction #(W));
 
-    `uvm_component_param_utils(ReadMonitor)
-
-    typedef ReadTransaction #(W) RTX;
+    `uvm_component_param_utils(ReadMonitor#(W))
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        RTX tr[2];
+        ReadTransaction#(W) tr[2];
         forever begin
             @(posedge vif.clk_r);
             tr[1] = tr[0];
-            tr[0] = RTX::type_id::create("tr", this);
+            tr[0] = ReadTransaction#(W)::type_id::create("tr", this);
             if (vif.ren) begin
                 tr[0].ren = 1;
             end else begin

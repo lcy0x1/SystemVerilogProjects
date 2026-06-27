@@ -2,7 +2,7 @@ class main_test extends uvm_test;
 
     `uvm_component_utils(main_test)
 
-    parameter W = 7;
+    parameter W = 15;
 
     Environment #(W) env;
 
