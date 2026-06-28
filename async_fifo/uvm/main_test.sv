@@ -21,7 +21,7 @@ class main_test extends uvm_test;
 
     virtual task run_phase(uvm_phase phase);
         VirtualSequence #(W) seq = VirtualSequence#(W)::type_id::create("vir_seq");
-        seq.conf.count = 10;
+        seq.conf.count = 1000;
         
         phase.raise_objection(this);
         env.runSequence(seq);
