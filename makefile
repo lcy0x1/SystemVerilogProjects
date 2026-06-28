@@ -11,3 +11,7 @@ run:
 .PHONY: uvm
 uvm:
 	OBJCACHE=ccache verilator -j 4 $(FLAGS) $(UVM) $(DIR)/uvm/tb_top.sv --top-module tb_top
+
+.PHONY: uvm_trace
+uvm_trace:
+	OBJCACHE=ccache verilator -j 4 $(FLAGS) $(UVM) $(DIR)/uvm/tb_top.sv --top-module tb_top --trace

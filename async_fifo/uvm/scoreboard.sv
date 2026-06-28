@@ -20,15 +20,33 @@ class Scoreboard #(W=7) extends uvm_scoreboard;
 
     virtual function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        //m_agent.m_monitor.mon_analysis_port.connect(m_scoreboard.ap_imp);
     endfunction
 
-    virtual function void write_wt(WriteTransaction #(W) tr);
+    bit[W:0] data[$];
+    int written = 0, index = 0;
+    int success = 0, fail = 0;
 
+    virtual function void write_wt(WriteTransaction #(W) tr);
+        if(!tr.wen) return;
+        written ++;
+        data.push_back(tr.data);
     endfunction
 
     virtual function void write_rt(ReadTransaction #(W) tr);
-    
+        bit[W:0] e;
+        if(!tr.ren) return;
+        e = data.pop_front();
+        if(tr.data != e) begin
+            fail ++;
+            `uvm_error(get_name(), $sformatf("Data Mismatch at index %d: Written %h, Read %h", index, e, tr.data))
+        end else begin
+            success ++;
+        end
+        index ++;
+    endfunction
+
+    virtual function void report_phase(uvm_phase phase);
+        `uvm_info(get_name(), $sformatf("Written %d, Read %d, Success %d, Fail %d", written, index, success, fail), UVM_LOW)
     endfunction
 
 endclass

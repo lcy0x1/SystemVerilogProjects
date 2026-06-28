@@ -42,6 +42,11 @@ module tb_top;
 	wrapper #(P,W) dut(intf.dut);
 
 	initial begin
+		$dumpfile("tb_top.vcd");
+		$dumpvars;
+	end
+
+	initial begin
 		uvm_config_db #(virtual fifo_bus #(W))::set(null, "uvm_test_top.*", "vif", intf);
 		run_test("main_test");
 	end

@@ -38,14 +38,12 @@ class WriteDriver #(W=7) extends AbstractDriver #(W, WriteTransaction #(W));
                 if(!isFull) begin
                     vif.din <= tr.data;
                     vif.wen <= 1;
-                    `uvm_info(get_name(), $sformatf("Pushed %h", tr.data), UVM_LOW)
                     seq_item_port.item_done();
                     seq_item_port.get_next_item(tr);
                 end else begin
                     vif.wen <= 0;
                 end
             end else begin
-                @(posedge vif.clk_w);
                 vif.wen <= 0;
                 seq_item_port.item_done();
                 seq_item_port.get_next_item(tr);

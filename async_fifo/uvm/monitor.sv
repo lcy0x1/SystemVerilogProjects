@@ -55,23 +55,17 @@ class ReadMonitor #(W=7) extends AbstractMonitor #(W, ReadTransaction #(W));
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        ReadTransaction#(W) tr[2];
+        ReadTransaction#(W) tr;
         forever begin
             @(posedge vif.clk_r);
-            tr[1] = tr[0];
-            tr[0] = ReadTransaction#(W)::type_id::create("tr", this);
+            tr = ReadTransaction#(W)::type_id::create("tr", this);
             if (vif.ren) begin
-                tr[0].ren = 1;
+                tr.ren = 1;
+                tr.data = vif.dout;
             end else begin
-                tr[0].ren = 0;
+                tr.ren = 0;
             end
-            if(tr[1] != null) begin
-                if(tr[1].ren) begin
-                    tr[1].data = vif.dout;
-                    `uvm_info(get_name(), $sformatf("Received %h", tr[1].data), UVM_LOW)
-                end
-                analysis_port.write(tr[1]);
-            end
+            analysis_port.write(tr);
         end
     endtask
 
