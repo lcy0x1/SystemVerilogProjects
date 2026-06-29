@@ -6,29 +6,26 @@ import uvm_pkg::*;
 `include "dut/buffer.v"
 `include "dut/async_fifo.v"
 `include "uvm/bus.sv"
+`include "uvm/dut.sv"
 `include "uvm/transaction.sv"
 `include "uvm/driver.sv"
 `include "uvm/monitor.sv"
+`include "uvm/debug_monitor.sv"
 `include "uvm/sequencer.sv"
 `include "uvm/sequence.sv"
+`include "uvm/header.sv"
+`include "uvm/subscriber.sv"
 `include "uvm/agent.sv"
 `include "uvm/scoreboard.sv"
 `include "uvm/env.sv"
 
 `define WIDTH 15
+`define POWER 3
 `include "uvm/main_test.sv"
-
-module wrapper #(P=2, W=7) (
-	fifo_bus.dut bus
-);
-
-async_fifo #(P,W) fifo(bus.rst_n, bus.clk_w, bus.wen, bus.clk_r, bus.ren, bus.din, bus.dout, bus.full, bus.empty, bus.near_full, bus.near_empty);
-
-endmodule
 
 module tb_top;
 
-	parameter P = 3;
+	parameter P = `POWER;
 	parameter W = `WIDTH;
 
 	localparam TW = 10, TR = 8;
@@ -39,7 +36,8 @@ module tb_top;
 	always #(TR/2) clk_r = ~clk_r;
 
 	fifo_bus #(W) intf(clk_w, clk_r);
-	wrapper #(P,W) dut(intf.dut);
+	debug_bus #(P) debug(clk_w, clk_r);
+	wrapper #(P,W) dut(intf.dut, debug.dut);
 
 	initial begin
 		$dumpfile("tb_top.vcd");
@@ -48,6 +46,7 @@ module tb_top;
 
 	initial begin
 		uvm_config_db #(virtual fifo_bus #(W))::set(null, "uvm_test_top.*", "vif", intf);
+		uvm_config_db #(virtual debug_bus #(P))::set(null, "uvm_test_top.*", "debug", debug);
 		run_test("main_test");
 	end
 

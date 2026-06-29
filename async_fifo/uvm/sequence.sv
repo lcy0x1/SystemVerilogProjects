@@ -16,7 +16,7 @@ class WriteSequence #(W=7) extends uvm_sequence #(WriteTransaction #(W));
     endfunction
 
     virtual task body();
-        `uvm_info(get_name(),  "Write Sequence Start", UVM_LOW)
+        `uvm_info(get_name(), "Write Sequence Start", UVM_LOW)
         while (conf.count > count) begin
             req = WriteTransaction#(W)::type_id::create("write_tx");
             start_item(req);
@@ -43,7 +43,7 @@ class ReadSequence #(W=7) extends uvm_sequence #(ReadTransaction #(W));
     endfunction
 
     virtual task body();
-        `uvm_info(get_name(),  "Read Sequence Start", UVM_LOW)
+        `uvm_info(get_name(), "Read Sequence Start", UVM_LOW)
         while (conf.count > count) begin
             req = ReadTransaction#(W)::type_id::create("read_tx");
             start_item(req);
@@ -109,9 +109,9 @@ class VirtualSequence #(W=7) extends RootSequence;
         wseq.conf = conf;
         rseq.conf = conf;
 
-        `uvm_info(get_name(),  "Squence Start", UVM_LOW)
+        `uvm_info(get_name(), "Squence Start", UVM_LOW)
         rstseq.start(p_sequencer.rstseq);
-        `uvm_info(get_name(),  "Reset Complete", UVM_LOW)
+        `uvm_info(get_name(), "Reset Complete", UVM_LOW)
         fork
             wseq.start(p_sequencer.wseq);
             rseq.start(p_sequencer.rseq);

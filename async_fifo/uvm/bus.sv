@@ -23,3 +23,22 @@ interface fifo_bus #(W = 7) (bit clk_w, bit clk_r);
 
 endinterface
 
+interface debug_bus #(P = 2) (bit clk_w, bit clk_r);
+    logic [P:0] bwptr, brptr;
+
+    clocking cw @(posedge clk_w);
+        default input #1ns output #2ns;
+        input bwptr;
+    endclocking
+
+    clocking cr @(posedge clk_r);
+        default input #1ns output #2ns;
+        input brptr;
+    endclocking
+
+    modport dut(
+        output bwptr, brptr
+    );
+
+endinterface
+

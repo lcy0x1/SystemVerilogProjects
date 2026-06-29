@@ -3,8 +3,9 @@ class main_test extends uvm_test;
     `uvm_component_utils(main_test)
 
     parameter W = `WIDTH;
+    parameter P = `POWER;
 
-    Environment #(W) env;
+    DebugEnvironment #(P, W) env;
 
     function new(string name, uvm_component parent = null);
         super.new(name, parent);
@@ -12,7 +13,7 @@ class main_test extends uvm_test;
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        env = Environment#(W)::type_id::create("env", this);
+        env = DebugEnvironment#(P,W)::type_id::create("env", this);
     endfunction
 
     virtual function void end_of_elaboration_phase(uvm_phase phase);

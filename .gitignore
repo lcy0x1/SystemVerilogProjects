@@ -2,3 +2,4 @@
 *.vcd
 /test/
 /uvm/
+coverage.dat

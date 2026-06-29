@@ -52,3 +52,31 @@ class ReadTransaction #(W=7) extends uvm_sequence_item;
     endfunction
 
 endclass
+
+class WriteIndexTransaction #(P=2) extends uvm_sequence_item;
+
+    rand bit[P:0] ptr;
+
+    `uvm_object_param_utils_begin(WriteIndexTransaction#(P))
+        `uvm_field_int(ptr, UVM_ALL_ON)
+    `uvm_object_utils_end
+
+    function new(string name = "wptr");
+        super.new(name);
+    endfunction
+
+endclass
+
+class ReadIndexTransaction #(P=2) extends uvm_sequence_item;
+
+    bit[P:0] ptr;
+
+    `uvm_object_param_utils_begin(ReadIndexTransaction#(P))
+        `uvm_field_int(ptr, UVM_ALL_ON)
+    `uvm_object_utils_end
+
+    function new(string name = "rptr");
+        super.new(name);
+    endfunction
+
+endclass

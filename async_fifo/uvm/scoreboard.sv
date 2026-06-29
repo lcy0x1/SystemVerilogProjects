@@ -1,6 +1,3 @@
-`uvm_analysis_imp_decl(_wt)
-`uvm_analysis_imp_decl(_rt)
-
 class Scoreboard #(W=7) extends uvm_scoreboard;
 
     `uvm_component_param_utils(Scoreboard#(W))

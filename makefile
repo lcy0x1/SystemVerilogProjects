@@ -1,6 +1,6 @@
 DIR = async_fifo
 FLAGS = --Wno-WIDTHTRUNC --Wno-WIDTHEXPAND --sched-zero-delay --timescale 1ns/1ps --binary +incdir+$(DIR)
-UVM = +incdir+uvm/src +define+UVM_NO_DPI uvm/src/uvm_pkg.sv
+UVM = +incdir+uvm/src +define+UVM_NO_DPI uvm/src/uvm_pkg.sv --coverage-user --Wno-COVERIGN
 
 all:
 	OBJCACHE=ccache verilator $(FLAGS) uvm/tb_fifo.sv --trace
