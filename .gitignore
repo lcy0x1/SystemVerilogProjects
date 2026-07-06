@@ -2,4 +2,6 @@
 *.vcd
 /test/
 /uvm/
+/verilator/
+/dnn/
 coverage.dat
