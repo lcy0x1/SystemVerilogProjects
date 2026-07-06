@@ -1,4 +1,5 @@
-module my_fp_mult(
+// Adopted from MATLAB
+module fp_mult(
     input [31:0] a,
     input [31:0] b,
     output [31:0] y
