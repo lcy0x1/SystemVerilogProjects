@@ -1,5 +1,5 @@
 `include "dut/mat/trans.v"
-`include "dut/mat/transpose_ref.v"
+`include "dut/mat/transpose.v"
 
 module tb_trans();
   
@@ -16,7 +16,7 @@ module tb_trans();
     wire [7:0] out_mult_clear;
 	wire valid;
 
-	t8x8 main(clk, enable, reset, do_transpose, x_in, en, z_out, in_mult_clear, out_mult_clear, valid);
+	transpose #(2) main(clk, enable, reset, do_transpose, x_in, en, z_out, in_mult_clear, out_mult_clear, valid);
 	
 	initial begin
 		#1;

@@ -23,8 +23,8 @@ class TransposeResetDriver #(W=7) extends uvm_driver #(TransposeResetTransaction
         forever begin
             seq_item_port.get_next_item(tr);
             @(posedge vif.clk);
-            vif.reset = tr.reset;
-            vif.enable = tr.enable;
+            vif.reset <= tr.reset;
+            vif.enable <= tr.enable;
             @(posedge vif.clk);
             seq_item_port.item_done();
         end
@@ -55,21 +55,21 @@ class TransposeDriver #(W=7) extends uvm_driver #(TransposeInputTransaction#(W))
         forever begin
             seq_item_port.get_next_item(tr);
             @(posedge vif.clk);
-            vif.in_mult_clear = 0;
-            vif.do_transpose = tr.transpose;
-            vif.en = 1;
+            vif.in_mult_clear <= 0;
+            vif.do_transpose <= tr.transpose;
+            vif.en <= 1;
             @(posedge vif.clk);
-            vif.en = 0;
-            vif.do_transpose = 0;
+            vif.en <= 0;
+            vif.do_transpose <= 0;
             for(int t=0; t<=W*2+1; t++) begin
                 for(i=0; i<=W; i++) begin
                     j = t-i;
                     if(t>=i && j<=W) begin
-                        vif.x_in[i] = tr.data[i*(W+1)+j];
+                        vif.x_in[i] <= tr.data[i*(W+1)+j];
                     end else begin
-                        vif.x_in[i] = 0;
+                        vif.x_in[i] <= 0;
                     end
-                    vif.in_mult_clear[i] = tr.clearMult && j == W;
+                    vif.in_mult_clear[i] <= tr.clearMult && j == W;
                 end
                 @(posedge vif.clk);
             end

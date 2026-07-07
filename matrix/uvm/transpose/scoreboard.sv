@@ -32,8 +32,8 @@ class TransposeScoreboard #(W=7) extends uvm_scoreboard;
         for(int i=0; i<=W; i++) begin
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
-                io = intr.transpose ? ii : j*(W+1)+i;
-                if(tr.data[io] != intr.data[io]) begin
+                io = intr.transpose ? j*(W+1)+i : ii;
+                if(tr.data[io] != intr.data[ii]) begin
                     `uvm_error(get_name(), $sformatf("Matrix mismatch at %d, %d: expected %h, get%h",i,j,intr.data[ii],tr.data[io]));
                 end
             end

@@ -17,11 +17,11 @@ interface transpose_bus #(W = 7) (input bit clk);
 
 endinterface
 
-module transpose_wrapper #(W=7) (
+module transpose_wrapper #(P=2, W=((1<<(P+1))-1)) (
     transpose_bus.dut bus
 );
 
-transpose #(W) dut(bus.clk, bus.enable, bus.reset, bus.do_transpose, bus.x_in, bus.en, bus.z_out, bus.in_mult_clear, bus.out_mult_clear, bus.valid);
+transpose #(P, W) dut(bus.clk, bus.enable, bus.reset, bus.do_transpose, bus.x_in, bus.en, bus.z_out, bus.in_mult_clear, bus.out_mult_clear, bus.valid);
 
 endmodule
 
