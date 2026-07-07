@@ -1,23 +1,23 @@
-`ifndef UVM_TRANSPOSE_SEQUENCE
-`define UVM_TRANSPOSE_SEQUENCE
+`ifndef UVM_MULT_SEQUENCE
+`define UVM_MULT_SEQUENCE
 
-class TransposeSequence #(W=7) extends uvm_sequence #(TransposeInputTransaction #(W));
+class MultSequence #(W=7) extends uvm_sequence #(MultInputTransaction #(W));
     
-    `uvm_object_param_utils(TransposeSequence#(W))
+    `uvm_object_param_utils(MultSequence#(W))
 
-    function new(string name = "transpose_sequence");
+    function new(string name = "mult_sequence");
         super.new(name);
     endfunction
 
     virtual task body();
-        `uvm_info(get_name(), "Transpose Sequence Start", UVM_LOW)
+        `uvm_info(get_name(), "Mult Sequence Start", UVM_LOW)
 
-        req = TransposeInputTransaction#(W)::type_id::create("matrix");
+        req = MultInputTransaction#(W)::type_id::create("matrix");
         start_item(req);
         assert(req.randomize());
         finish_item(req);
 
-        req = TransposeInputTransaction#(W)::type_id::create("matrix");
+        req = MultInputTransaction#(W)::type_id::create("matrix");
         start_item(req);
         assert(req.randomize());
         finish_item(req);
@@ -26,16 +26,16 @@ class TransposeSequence #(W=7) extends uvm_sequence #(TransposeInputTransaction 
 
 endclass
 
-class TransposeResetSequence extends uvm_sequence #(TransposeResetTransaction);
+class MultResetSequence extends uvm_sequence #(MultResetTransaction);
     
-    `uvm_object_utils(TransposeResetSequence)
+    `uvm_object_utils(MultResetSequence)
 
     function new(string name = "read_sequence");
         super.new(name);
     endfunction
 
     task driveReset(bit reset, bit enable);
-        req = TransposeResetTransaction::type_id::create("rst_tx");
+        req = MultResetTransaction::type_id::create("rst_tx");
         req.reset = reset;
         req.enable = enable;
         start_item(req);

@@ -1,13 +1,13 @@
-`ifndef UVM_TRANSPOSE_AGENT
-`define UVM_TRANSPOSE_AGENT
+`ifndef UVM_MULT_AGENT
+`define UVM_MULT_AGENT
 
-virtual class TransposeInputAgent #(W=7) extends uvm_agent;
+virtual class MultInputAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(TransposeInputAgent#(W))
+    `uvm_component_param_utils(MultInputAgent#(W))
 
-    TransposeDriver #(W) driver;
-    TransposeInputMonitor #(W) monitor;
-    uvm_sequencer #(TransposeInputTransaction#(W)) sequencer;
+    MultDriver #(W) driver;
+    MultInputMonitor #(W) monitor;
+    uvm_sequencer #(MultInputTransaction#(W)) sequencer;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -16,10 +16,10 @@ virtual class TransposeInputAgent #(W=7) extends uvm_agent;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         if (get_is_active()) begin
-            sequencer = uvm_sequencer#(TransposeInputTransaction#(W))::type_id::create("transpose_sequencer", this);
-            driver = TransposeDriver#(W)::type_id::create("transpose_driver", this);
+            sequencer = uvm_sequencer#(MultInputTransaction#(W))::type_id::create("mult_sequencer", this);
+            driver = MultDriver#(W)::type_id::create("mult_driver", this);
         end
-        monitor = TransposeInputMonitor#(W)::type_id::create("transpose_input_monitor", this);
+        monitor = MultInputMonitor#(W)::type_id::create("mult_input_monitor", this);
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);
@@ -30,11 +30,11 @@ virtual class TransposeInputAgent #(W=7) extends uvm_agent;
 
 endclass
 
-virtual class TransposeOutputAgent #(W=7) extends uvm_agent;
+virtual class MultOutputAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(TransposeOutputAgent#(W))
+    `uvm_component_param_utils(MultOutputAgent#(W))
 
-    TransposeOutputMonitor #(W) monitor;
+    MultOutputMonitor #(W) monitor;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -42,7 +42,7 @@ virtual class TransposeOutputAgent #(W=7) extends uvm_agent;
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        monitor = TransposeOutputMonitor#(W)::type_id::create("transpose_output_monitor", this);
+        monitor = MultOutputMonitor#(W)::type_id::create("mult_output_monitor", this);
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);
@@ -51,12 +51,12 @@ virtual class TransposeOutputAgent #(W=7) extends uvm_agent;
 
 endclass
 
-virtual class TransposeResetAgent #(W=7) extends uvm_agent;
+virtual class MultResetAgent #(W=7) extends uvm_agent;
 
-    `uvm_component_param_utils(TransposeResetAgent#(W))
+    `uvm_component_param_utils(MultResetAgent#(W))
 
-    TransposeResetDriver #(W) driver;
-    uvm_sequencer #(TransposeResetTransaction) sequencer;
+    MultResetDriver #(W) driver;
+    uvm_sequencer #(MultResetTransaction) sequencer;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -65,8 +65,8 @@ virtual class TransposeResetAgent #(W=7) extends uvm_agent;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         if (get_is_active()) begin
-            sequencer = uvm_sequencer#(TransposeResetTransaction)::type_id::create("transpose_reset_sequencer", this);
-            driver = TransposeResetDriver#(W)::type_id::create("transpose_reset_driver", this);
+            sequencer = uvm_sequencer#(MultResetTransaction)::type_id::create("mult_reset_sequencer", this);
+            driver = MultResetDriver#(W)::type_id::create("mult_reset_driver", this);
         end
     endfunction
 

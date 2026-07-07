@@ -1,3 +1,6 @@
+`ifndef UVM_TRANSPOSE_ENV
+`define UVM_TRANSPOSE_ENV
+
 virtual class AbstractEnv extends uvm_env;
 
 	`uvm_component_abstract_utils(AbstractEnv)
@@ -36,3 +39,5 @@ class TransposeEnvironment #(W=7) extends AbstractEnv;
 	endfunction
 
 endclass
+
+`endif

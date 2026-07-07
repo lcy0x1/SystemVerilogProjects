@@ -1,12 +1,12 @@
-`ifndef UVM_TRANSPOSE_SCOREBOARD
-`define UVM_TRANSPOSE_SCOREBOARD
+`ifndef UVM_MULT_SCOREBOARD
+`define UVM_MULT_SCOREBOARD
 
-class TransposeScoreboard #(W=7) extends uvm_scoreboard;
+class MultScoreboard #(W=7) extends uvm_scoreboard;
 
-    `uvm_component_param_utils(TransposeScoreboard#(W))
+    `uvm_component_param_utils(MultScoreboard#(W))
 
-    uvm_analysis_imp_wt #(TransposeInputTransaction #(W), TransposeScoreboard #(W)) wt_imp;
-    uvm_analysis_imp_rt #(TransposeOutputTransaction #(W), TransposeScoreboard #(W)) rt_imp;
+    uvm_analysis_imp_wt #(MultInputTransaction #(W), MultScoreboard #(W)) wt_imp;
+    uvm_analysis_imp_rt #(MultOutputTransaction #(W), MultScoreboard #(W)) rt_imp;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -22,20 +22,20 @@ class TransposeScoreboard #(W=7) extends uvm_scoreboard;
         super.connect_phase(phase);
     endfunction
 
-    TransposeInputTransaction #(W) queue[$];
+    MultInputTransaction #(W) queue[$];
 
-    virtual function void write_wt(TransposeInputTransaction #(W) tr);
+    virtual function void write_wt(MultInputTransaction #(W) tr);
         queue.push_back(tr);
     endfunction
 
-    virtual function void write_rt(TransposeOutputTransaction #(W) tr);
-        TransposeInputTransaction #(W) intr;
+    virtual function void write_rt(MultOutputTransaction #(W) tr);
+        MultInputTransaction #(W) intr;
         int ii, io;
         intr = queue.pop_front();
         for(int i=0; i<=W; i++) begin
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
-                io = intr.transpose ? j*(W+1)+i : ii;
+                io = intr.mult ? j*(W+1)+i : ii;
                 if(tr.data[io] != intr.data[ii]) begin
                     `uvm_error(get_name(), $sformatf("Matrix mismatch at %d, %d: expected %h, get%h",i,j,intr.data[ii],tr.data[io]));
                 end
