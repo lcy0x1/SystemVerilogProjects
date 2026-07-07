@@ -1,5 +1,5 @@
 `include "dut/mat/trans.v"
-`include "dut/mat/transpose.v"
+`include "dut/mat/transpose_ref.v"
 
 module tb_trans();
   
@@ -14,11 +14,10 @@ module tb_trans();
 	reg [7:0] in_mult_clear;
     wire [31:0] z_out [7:0];
     wire [7:0] out_mult_clear;
+	wire valid;
 
-	t8x8 main(clk, enable, reset, do_transpose, x_in, en, z_out, in_mult_clear, out_mult_clear);
+	t8x8 main(clk, enable, reset, do_transpose, x_in, en, z_out, in_mult_clear, out_mult_clear, valid);
 	
-
-
 	initial begin
 		#1;
 		forever begin
@@ -52,27 +51,10 @@ module tb_trans();
 		enable = 1;
 		#(CLK);
 		do_transpose = 1;
-		#(CLK);
 		en = 1;
 		#(CLK);
-		for(int t=0;t<16;t++) begin
-			for(i=0;i<8;i++) begin
-				j = t-i;
-				if(t>=i && j<8) begin
-					x_in[i]=data[i][j];
-				end else begin
-					x_in[i] = 0;
-				end
-				in_mult_clear[i] = j == 7;
-			end
-			#(CLK);
-		end
-		en = 0;
-		#(CLK*20)
 		do_transpose = 0;
-		#(CLK);
-		en = 1;
-		#(CLK);
+		en = 0;
 		for(int t=0;t<16;t++) begin
 			for(i=0;i<8;i++) begin
 				j = t-i;
@@ -85,7 +67,22 @@ module tb_trans();
 			end
 			#(CLK);
 		end
+		#(CLK*20)
+		en = 1;
+		#(CLK);
 		en = 0;
+		for(int t=0;t<16;t++) begin
+			for(i=0;i<8;i++) begin
+				j = t-i;
+				if(t>=i && j<8) begin
+					x_in[i]=data[i][j];
+				end else begin
+					x_in[i] = 0;
+				end
+				in_mult_clear[i] = j == 7;
+			end
+			#(CLK);
+		end
 		#(CLK*20)
 		
 		$finish;

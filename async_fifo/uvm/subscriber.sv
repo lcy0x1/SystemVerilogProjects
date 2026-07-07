@@ -14,16 +14,16 @@ class Coverage #(P=2, W=7) extends uvm_subscriber;
     WriteIndexTransaction#(P) wptr;
     ReadIndexTransaction#(P) rptr;
 
-    covergroup cg;
-        coverpoint wt.wen;
-        coverpoint rt.ren;
-        coverpoint wptr.ptr;
-        coverpoint rptr.ptr;
-    endgroup
+    // covergroup cg;
+    //     coverpoint wt.wen;
+    //     coverpoint rt.ren;
+    //     coverpoint wptr.ptr;
+    //     coverpoint rptr.ptr;
+    // endgroup
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
-        cg = new();
+        // cg = new();
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
@@ -59,14 +59,14 @@ class Coverage #(P=2, W=7) extends uvm_subscriber;
 
     function void checkWrite();
         if(wt==null || wptr==null) return;
-        cg.sample();
+        // cg.sample();
         wt = null;
         wptr = null;
     endfunction
 
     function void checkRead();
         if(rt==null || rptr==null) return;
-        cg.sample();
+        // cg.sample();
         rt = null;
         rptr = null;
     endfunction

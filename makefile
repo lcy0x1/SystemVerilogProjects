@@ -1,19 +1,19 @@
 FLAGS = --Wno-WIDTHTRUNC --Wno-WIDTHEXPAND --sched-zero-delay --timescale 1ns/1ps --binary
 UVM = +incdir+uvm/src +define+UVM_NO_DPI uvm/src/uvm_pkg.sv
 
-all:
+fifo:
 	OBJCACHE=ccache verilator $(FLAGS) +incdir+async_fifo module_test/tb_fifo.sv --trace
 
-run:
+run_fifo:
 	./obj_dir/Vtb_fifo
 
-.PHONY: uvm
-uvm:
-	verilator -j 4 $(FLAGS) $(UVM) +incdir+async_fifo uvm/tb_top.sv --top-module tb_top --debug --coverage-user
+.PHONY: fifo_uvm
+fifo_uvm:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+async_fifo uvm/tb_top.sv --top-module tb_top --debug --coverage-user
 
-.PHONY: uvm_trace
-uvm_trace:
-	OBJCACHE=ccache verilator -j 4 $(FLAGS) $(UVM) +incdir+async_fifo uvm/tb_top.sv --top-module tb_top --trace
+.PHONY: fifo_uvm_trace
+fifo_uvm_trace:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+async_fifo uvm/tb_top.sv --top-module tb_top --trace
 
 
 .PHONY: test
@@ -23,3 +23,15 @@ test:
 .PHONY: trans
 trans:
 	OBJCACHE=ccache verilator $(FLAGS) +incdir+matrix unit_test/tb_trans.sv --trace --top-module tb_trans
+
+.PHONY: trans_uvm
+trans_uvm:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+matrix uvm/transpose/tb_top.sv --top-module tb_top
+
+.PHONY: trans_uvm_trace
+trans_uvm_trace:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+matrix uvm/transpose/tb_top.sv --top-module tb_top --trace
+
+.PHONY: run_uvm
+run_uvm:
+	./obj_dir/Vtb_top

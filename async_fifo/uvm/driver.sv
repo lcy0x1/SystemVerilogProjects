@@ -32,7 +32,7 @@ class WriteDriver #(W=7) extends AbstractDriver #(W, WriteTransaction #(W));
         seq_item_port.get_next_item(tr);
 
         forever begin
-            @(posedge vif.clk_w);                  
+            @(posedge vif.clk_w);
             if(tr.wen) begin
                 isFull = vif.wen & vif.near_full | vif.full;
                 if(!isFull) begin
