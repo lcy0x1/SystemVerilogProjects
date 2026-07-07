@@ -1,6 +1,3 @@
-`include "mult.v"
-`include "blockmem.v"
-`include "transpose.v"
 
 /*
 Author: Arthur Wang, Ian Wu

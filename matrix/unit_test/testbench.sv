@@ -1,3 +1,13 @@
+`include "dut/calc/calc.v"
+`include "dut/mat/mac.v"
+`include "dut/mat/trans.v"
+`include "dut/mat/transpose_ref.v"
+`include "dut/mat/mult.v"
+`include "dut/mem/memory.v"
+`include "dut/mem/blockmem.v"
+`include "dut/control.v"
+`include "dut/data_interface.v"
+
 // Code your testbench here
 // or browse Examples
 module testbench();

@@ -59,10 +59,10 @@ module m8x8(
 
   wire [31:0] w_in [7:0];
   wire [31:0] x_in [7:0];
-  wire [7:0] clear_in;
+  wire [7:0] clear_in, valid_w, valid_x;
 
-  t8x8 transw(clk, enable, reset, wt,  win_raw, en, w_in, clear_in_raw, clear_in);
-  t8x8 transx(clk, enable, reset, xt,  xin_raw, en, x_in, clear_in_raw, temp_0);
+  t8x8 transw(clk, enable, reset, wt,  win_raw, en, w_in, clear_in_raw, clear_in, valid_w);
+  t8x8 transx(clk, enable, reset, xt,  xin_raw, en, x_in, clear_in_raw, temp_0, valid_x);
   
   wire [31:0] w_mid [6:0][7:0];
   wire [31:0] x_mid [7:0][6:0];

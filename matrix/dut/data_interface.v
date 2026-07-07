@@ -1,4 +1,4 @@
-`include "control.v"
+
 /*
 Author: Arthur Wang
 Create Date: Nov 19

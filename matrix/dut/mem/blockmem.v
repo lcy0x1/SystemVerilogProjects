@@ -1,5 +1,3 @@
-`include "memory.v"
-
 /*
 Author: Arthur Wang
 Creation Date: Nov 14 
@@ -21,7 +19,7 @@ basic wires:
 Read related flags:
 ->  read_mode: see below
 ->  page_read: page address to read
-->  switch: signal to switch line
+->  sw: signal to switch line
 <-  x_out: output bus
 <-  clear_out: For matrix multiplier unit. 
       It is the last data on the respective line
@@ -77,7 +75,7 @@ module blockmem(
   output [7:0] clear_out,
   input [31:0] bus_in [7:0],
   input [7:0] bus_valid,
-  input switch,
+  input sw,
   input [1:0] page_read,
   input [1:0] page_write,
   output [31:0] out_data
@@ -142,8 +140,8 @@ module blockmem(
         waddr <= lw[0] ? waddr == size[8:6] ? 0 : waddr + 1 : waddr;
       end
       if(read_mode[0] == 1) begin
-        // read address increment by 1 when <switch> is on
-        raddr <= switch ? raddr == size[8:6] ? 0 : raddr + 1 : raddr;
+        // read address increment by 1 when <sw> is on
+        raddr <= sw ? raddr == size[8:6] ? 0 : raddr + 1 : raddr;
       end else begin
         read_slice_ind <= |lr ? read_slice_ind == 7 ? 0 : read_slice_ind + 1 : read_slice_ind;
         raddr <= |lr && read_slice_ind == 7 ? raddr == size[8:6] ? 0 : raddr + 1 : raddr;

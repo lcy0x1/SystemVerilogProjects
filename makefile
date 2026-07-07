@@ -35,3 +35,7 @@ trans_uvm_trace:
 .PHONY: run_uvm
 run_uvm:
 	./obj_dir/Vtb_top
+
+.PHONY: mult_test
+mult_test:
+	OBJCACHE=ccache verilator $(FLAGS) +incdir+matrix unit_test/testbench.sv --trace --top-module testbench
