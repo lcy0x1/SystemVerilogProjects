@@ -19,16 +19,16 @@
 	<-  b_out: binary relu derivative output
 
 	How it works:
-					w_in
-						|
-	--------------+----|----------- shift
-					|    v
-					+-> [   ]
-	x_in, clear_in -> [mac] -> x_out, clear_out
-			y_out <- [   ] <- y_in
-						|
-						v
-					w_out
+				     	w_in
+	    				 |
+	 --------------+-----|----------- shift
+				   |     v
+				   +-> [   ]
+	 x_in, clear_in -> [mac] -> x_out, clear_out
+			  y_out <- [   ] <- y_in
+						 |
+						 v
+					   w_out
 
 	config[1]: relu, pass data through relu
 	config[2]: transpose w
