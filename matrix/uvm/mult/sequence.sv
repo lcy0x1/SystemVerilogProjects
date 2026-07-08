@@ -18,6 +18,8 @@ class MultSequence #(W=7) extends uvm_sequence #(MultInputTransaction #(W));
             assert(req.randomize());
             req.conf = {i[2:0],1'b0};
             finish_item(req);
+
+            `uvm_info(get_name(), $sformatf("Progress: %d/%d", i, 256), UVM_LOW)
         end
         
     endtask

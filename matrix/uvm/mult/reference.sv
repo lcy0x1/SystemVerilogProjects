@@ -40,8 +40,8 @@ class MultReference #(W) extends uvm_component;
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
                 io = j*(W+1)+i;
-                w[i][j] = tr.w[tr.conf[2] ? io : ii];
-                x[i][j] = tr.x[tr.conf[3] ? ii : io];
+                w[i][j] = tr.w[tr.conf[3] ? io : ii];
+                x[i][j] = tr.x[tr.conf[2] ? ii : io];
                 z[i][j] = 0;
             end
         end

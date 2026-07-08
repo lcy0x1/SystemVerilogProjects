@@ -48,11 +48,9 @@ class MultScoreboard #(W=7) extends uvm_scoreboard;
                 `uvm_error(get_name(), $sformatf("ClearMult mismatch at %d",i));
             end
         end
-        if(error) begin
-            `uvm_error(get_name(), $sformatf("Comparison mismatch for conf = %b", intr.conf));   
+        if(error) begin 
             fail[intr.conf[3:1]]++;
         end else begin
-            `uvm_info(get_name(), $sformatf("Comparison succeeded for conf = %b", intr.conf), UVM_LOW)
             pass[intr.conf[3:1]]++;
         end
     endfunction
