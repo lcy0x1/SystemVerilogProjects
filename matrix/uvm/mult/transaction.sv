@@ -17,25 +17,11 @@ class MultResetTransaction extends uvm_sequence_item;
 
 endclass
 
-class MatrixTransaction #(W=7) extends uvm_sequence_item;
-
-    rand int data[0:(W+1)*(W+1)-1];
-
-    `uvm_object_param_utils_begin(MatrixTransaction#(W))
-        `uvm_field_sarray_int(data, UVM_ALL_ON)
-    `uvm_object_utils_end
-
-    function new(string name = "matrix");
-        super.new(name);
-    endfunction
-
-endclass
-
 class MultInputTransaction #(W=7) extends uvm_sequence_item;
 
     rand int w[0:(W+1)*(W+1)-1];
     rand int x[0:(W+1)*(W+1)-1];
-    bit[3:0] conf;
+    randc bit[3:0] conf;
     bit clear;
     int delay;
 
@@ -62,11 +48,13 @@ endclass
 class MultOutputTransaction #(W=7) extends uvm_sequence_item;
 
     int data[0:(W+1)*(W+1)-1];
-    bit clear[0:W];
+    bit[W:0] clear;
+    bit[3:0] conf; // for debug purpose only
 
     `uvm_object_param_utils_begin(MultOutputTransaction#(W))
         `uvm_field_sarray_int(data, UVM_ALL_ON)
         `uvm_field_sarray_int(clear, UVM_ALL_ON)
+        `uvm_field_sarray_int(conf, UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "output");

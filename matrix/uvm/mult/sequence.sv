@@ -10,17 +10,15 @@ class MultSequence #(W=7) extends uvm_sequence #(MultInputTransaction #(W));
     endfunction
 
     virtual task body();
+    int i;
         `uvm_info(get_name(), "Mult Sequence Start", UVM_LOW)
-
-        req = MultInputTransaction#(W)::type_id::create("matrix");
-        start_item(req);
-        assert(req.randomize());
-        finish_item(req);
-
-        req = MultInputTransaction#(W)::type_id::create("matrix");
-        start_item(req);
-        assert(req.randomize());
-        finish_item(req);
+        for(int i=0;i<256;i++) begin
+            req = MultInputTransaction#(W)::type_id::create("matrix");
+            start_item(req);
+            assert(req.randomize());
+            req.conf = {i[2:0],1'b0};
+            finish_item(req);
+        end
         
     endtask
 

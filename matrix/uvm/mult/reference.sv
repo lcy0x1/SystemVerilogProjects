@@ -34,6 +34,8 @@ class MultReference #(W) extends uvm_component;
 
         ans = new();
 
+        ans.conf = tr.conf;
+
         for(int i=0; i<=W; i++) begin
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
