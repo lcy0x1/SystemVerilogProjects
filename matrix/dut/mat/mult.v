@@ -61,8 +61,8 @@
     wire [31:0] x_in [W:0];
     wire [W:0] clear_in, valid_w, valid_x;
 
-    t8x8 transw(clk, enable, reset, wt,  win_raw, en, w_in, clear_in_raw, clear_in, valid_w);
-    t8x8 transx(clk, enable, reset, xt,  xin_raw, en, x_in, clear_in_raw, temp_0, valid_x);
+    transpose #(P,W) transw(clk, enable, reset, wt,  win_raw, en, w_in, clear_in_raw, clear_in, valid_w);
+    transpose #(P,W) transx(clk, enable, reset, xt,  xin_raw, en, x_in, clear_in_raw, temp_0, valid_x);
     
     wire [31:0] w_mid [W-1:0][W:0];
     wire [31:0] x_mid [W:0][W-1:0];

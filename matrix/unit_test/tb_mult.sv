@@ -2,7 +2,7 @@
 `include "dut/mat/mac.v"
 `include "dut/mat/mult.v"
 `include "dut/mat/trans.v"
-`include "dut/mat/transpose_ref.v"
+`include "dut/mat/transpose.v"
 
 module tb_mult();
   
