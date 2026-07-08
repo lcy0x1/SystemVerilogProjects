@@ -18,6 +18,7 @@ class MultEnvironment #(W=7) extends AbstractEnv;
 	MultResetAgent #(W) rst_ctrl;
 	MultInputAgent #(W) writer;
 	MultOutputAgent #(W) reader;
+	MultReference #(W) reference;
 	MultScoreboard #(W) scoreboard;
 	
 	function new(string name, uvm_component parent);
@@ -29,12 +30,14 @@ class MultEnvironment #(W=7) extends AbstractEnv;
 		rst_ctrl = MultResetAgent#(W)::type_id::create("reset_agent", this);
 		writer = MultInputAgent#(W)::type_id::create("write_agent", this);
 		reader = MultOutputAgent#(W)::type_id::create("read_agent", this);
+		reference = MultReference#(W)::type_id::create("reference", this);
 		scoreboard = MultScoreboard#(W)::type_id::create("scoreboard", this);
 	endfunction
 
 	function void connect_phase(uvm_phase phase);
 		super.connect_phase(phase);
-		writer.monitor.analysis_port.connect(scoreboard.wt_imp);
+		writer.monitor.analysis_port.connect(reference.wt_imp);
+		reference.rt_port.connect(scoreboard.wt_imp);
 		reader.monitor.analysis_port.connect(scoreboard.rt_imp);
 	endfunction
 

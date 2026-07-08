@@ -11,6 +11,7 @@ import uvm_pkg::*;
 `include "uvm/mult/sequence.sv"
 `include "uvm/mult/header.sv"
 `include "uvm/mult/agent.sv"
+`include "uvm/mult/reference.sv"
 `include "uvm/mult/scoreboard.sv"
 `include "uvm/mult/env.sv"
 
