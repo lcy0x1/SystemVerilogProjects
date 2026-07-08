@@ -39,3 +39,11 @@ run_uvm:
 .PHONY: mult_test
 mult_test:
 	OBJCACHE=ccache verilator $(FLAGS) +incdir+matrix unit_test/tb_mult.sv --trace --top-module tb_mult
+
+.PHONY: mult_uvm
+mult_uvm:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+matrix uvm/mult/tb_top.sv --top-module tb_top
+
+.PHONY: mult_uvm_trace
+mult_uvm_trace:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+matrix uvm/mult/tb_top.sv --top-module tb_top --trace

@@ -28,28 +28,32 @@ class MultInputMonitor #(W=7) extends uvm_monitor;
             @(posedge vif.clk);
             if(!vif.en) continue;
             tr = MultInputTransaction#(W)::type_id::create("tr", this);
-            tr.mult = vif.do_mult;
+            tr.conf = vif.conf;
             for(int t=0; t<=W*2; t++) begin
                 @(posedge vif.clk);
                 for(int i=0; i<=W; i++) begin
                     j = t-i;
                     if(t>=i && j<=W) begin
-                        tr.data[i*(W+1)+j] = vif.x_in[i];
+                        tr.x[i*(W+1)+j] = vif.x_in[i];
+                        tr.w[i*(W+1)+j] = vif.w_in[i];
                     end else begin
                         if(vif.x_in[i]) begin
-                            `uvm_error(get_name(), $sformatf("Invalid data at t=%d, i=%d, data=%h", t, i, vif.x_in[i]))
+                            `uvm_error(get_name(), $sformatf("Invalid x[] at t=%d, i=%d, data=%h", t, i, vif.x_in[i]))
+                        end
+                        if(vif.w_in[i]) begin
+                            `uvm_error(get_name(), $sformatf("Invalid w[] at t=%d, i=%d, data=%h", t, i, vif.w_in[i]))
                         end
                     end
                     if(t == i+W) begin
                         if(i == 0) begin
-                            tr.clearMult = vif.in_mult_clear[i];
+                            tr.clear = vif.clear_in[i];
                         end else begin
-                            if(vif.in_mult_clear[i] != tr.clearMult) begin
+                            if(vif.clear_in[i] != tr.clear) begin
                                 `uvm_error(get_name(), $sformatf("Invalid clearMult at t=%d, i=%d", t, i))
                             end
                         end
                     end else begin
-                        if(vif.in_mult_clear[i]) begin
+                        if(vif.clear_in[i]) begin
                             `uvm_error(get_name(), $sformatf("Invalid clearMult at t=%d, i=%d", t, i))
                         end
                     end
@@ -87,7 +91,7 @@ class MultOutputMonitor #(W=7) extends uvm_monitor;
         int j;
         forever begin
             @(posedge vif.clk);
-            if(!vif.valid) continue;
+            if(!vif.clear_out[0]) continue;
 		    phase.raise_objection(this, "Start recording");
             tr = MultOutputTransaction#(W)::type_id::create("tr", this);
             for(int t=0; t<=W*2+1; t++) begin
@@ -101,10 +105,10 @@ class MultOutputMonitor #(W=7) extends uvm_monitor;
                         end
                     end
 
-                    if(t == i+W+1) begin
-                        tr.clearMult[i] = vif.out_mult_clear[i];
+                    if(t == i) begin
+                        tr.clear[i] = vif.clear_out[i];
                     end else begin
-                        if(vif.out_mult_clear[i]) begin
+                        if(vif.clear_out[i]) begin
                             `uvm_error(get_name(), $sformatf("Invalid clearMult at t=%d, i=%d", t, i))
                         end
                     end

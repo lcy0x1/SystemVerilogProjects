@@ -55,21 +55,22 @@ class MultDriver #(W=7) extends uvm_driver #(MultInputTransaction#(W));
         forever begin
             seq_item_port.get_next_item(tr);
             @(posedge vif.clk);
-            vif.in_mult_clear <= 0;
-            vif.do_mult <= tr.mult;
+            vif.clear_in <= 0;
+            vif.conf <= tr.conf;
             vif.en <= 1;
             @(posedge vif.clk);
             vif.en <= 0;
-            vif.do_mult <= 0;
             for(int t=0; t<=W*2+1; t++) begin
                 for(i=0; i<=W; i++) begin
                     j = t-i;
                     if(t>=i && j<=W) begin
-                        vif.x_in[i] <= tr.data[i*(W+1)+j];
+                        vif.x_in[i] <= tr.x[i*(W+1)+j];
+                        vif.w_in[i] <= tr.w[i*(W+1)+j];
                     end else begin
                         vif.x_in[i] <= 0;
+                        vif.w_in[i] <= 0;
                     end
-                    vif.in_mult_clear[i] <= tr.clearMult && j == W;
+                    vif.clear_in[i] <= tr.clear && j == W;
                 end
                 @(posedge vif.clk);
             end

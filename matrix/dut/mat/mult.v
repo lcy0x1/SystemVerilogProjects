@@ -46,7 +46,7 @@
 		input [31:0] xin_raw [W:0],
 		input [W:0] clear_in_raw,
 		output [31:0] z_out [W:0],
-		output [W:0] clear_out,
+		output reg [W:0] clear_out,
 		output [W:0] b_out
 	);
 
@@ -59,7 +59,7 @@
 
     wire [31:0] w_in [W:0];
     wire [31:0] x_in [W:0];
-    wire [W:0] clear_in, valid_w, valid_x;
+    wire [W:0] clear_in, clear_out_pre, valid_w, valid_x;
 
     transpose #(P,W) transw(clk, enable, reset, wt,  win_raw, en, w_in, clear_in_raw, clear_in, valid_w);
     transpose #(P,W) transx(clk, enable, reset, xt,  xin_raw, en, x_in, clear_in_raw, temp_0, valid_x);
@@ -76,6 +76,14 @@
     wire [31:0] w_out [W:0];
     wire [31:0] x_out [W:0];
 
+	always @(posedge clk) begin
+		if(reset) begin
+			clear_out <= 0;
+		end else if(enable) begin
+			clear_out <= clear_out_pre;
+		end
+	end
+
     genvar i, j;
     generate
 		for(i=0; i<=W; i=i+1) begin
@@ -87,7 +95,7 @@
 				wire [31:0] iwo, ixo, iyo;
 				wire ico;
 
-				assign ish = clear_out[j];
+				assign ish = clear_out_pre[j];
 
 				if(i == 0) begin: first_x
 					assign ixi = x_in[j];
@@ -102,7 +110,7 @@
 				if(i == W) begin: last_x
 					assign iyi = 32'b0;
 					assign x_out[j] = ixo;
-					assign clear_out[j] = ico;
+					assign clear_out_pre[j] = ico;
 				end else begin: former_x
 					assign iyi = y_mid[j][i];
 					assign x_mid[j][i] = ixo;

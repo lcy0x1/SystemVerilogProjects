@@ -1,8 +1,9 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-`include "dut/mat/trans.v"
+`include "dut/calc/calc.v"
 `include "dut/mat/transpose.v"
-`include "dut/mat/transpose_ref.v"
+`include "dut/mat/mac.v"
+`include "dut/mat/mult.v"
 `include "intf/mult_bus.sv"
 `include "uvm/mult/transaction.sv"
 `include "uvm/mult/driver.sv"
@@ -29,8 +30,8 @@ module tb_top;
 	always #(T/2) clk = ~clk;
 
 	mult_bus #(W) intf(clk);
-	mult_reference #(W) dut(intf.dut);
-	//mult_wrapper #(P, W) dut(intf.dut);
+	//mult_reference #(W) dut(intf.dut);
+	mult_wrapper #(P, W) dut(intf.dut);
 
 	initial begin
 		$dumpfile("tb_top.vcd");

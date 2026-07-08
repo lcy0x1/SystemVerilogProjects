@@ -31,33 +31,42 @@ class MatrixTransaction #(W=7) extends uvm_sequence_item;
 
 endclass
 
-class MultInputTransaction #(W=7) extends MatrixTransaction #(W);
+class MultInputTransaction #(W=7) extends uvm_sequence_item;
 
-    randc bit mult;
-    bit clearMult;
+    rand int w[0:(W+1)*(W+1)-1];
+    rand int x[0:(W+1)*(W+1)-1];
+    bit[3:0] conf;
+    bit clear;
     int delay;
 
+    constraint matw {foreach (w[i]) { w[i] inside {[0:255]}; } }
+    constraint matx {foreach (x[i]) { x[i] inside {[0:255]}; } }
+
     `uvm_object_param_utils_begin(MultInputTransaction#(W))
-        `uvm_field_int(mult, UVM_ALL_ON)
-        `uvm_field_int(clearMult, UVM_ALL_ON)
+        `uvm_field_sarray_int(w, UVM_ALL_ON)
+        `uvm_field_sarray_int(x, UVM_ALL_ON)
+        `uvm_field_int(conf, UVM_ALL_ON)
+        `uvm_field_int(clear, UVM_ALL_ON)
         `uvm_field_int(delay, UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "input");
         super.new(name);
-        clearMult = 1;
+        clear = 1;
         delay = W*2+1;
+        conf = 0;
     endfunction
 
 endclass
 
+class MultOutputTransaction #(W=7) extends uvm_sequence_item;
 
-class MultOutputTransaction #(W=7) extends MatrixTransaction #(W);
-
-    bit clearMult[0:W];
+    int data[0:(W+1)*(W+1)-1];
+    bit clear[0:W];
 
     `uvm_object_param_utils_begin(MultOutputTransaction#(W))
-        `uvm_field_sarray_int(clearMult, UVM_ALL_ON)
+        `uvm_field_sarray_int(data, UVM_ALL_ON)
+        `uvm_field_sarray_int(clear, UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "output");

@@ -31,16 +31,40 @@ class MultScoreboard #(W=7) extends uvm_scoreboard;
     virtual function void write_rt(MultOutputTransaction #(W) tr);
         MultInputTransaction #(W) intr;
         int ii, io;
+
+        int w[W:0][W:0];
+        int x[W:0][W:0];
+        int z[W:0][W:0];
+        int ans[W:0][W:0];
+
         intr = queue.pop_front();
+
         for(int i=0; i<=W; i++) begin
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
-                io = intr.mult ? j*(W+1)+i : ii;
-                if(tr.data[io] != intr.data[ii]) begin
-                    `uvm_error(get_name(), $sformatf("Matrix mismatch at %d, %d: expected %h, get%h",i,j,intr.data[ii],tr.data[io]));
+                io = j*(W+1)+i;
+                w[i][j] = intr.w[intr.conf[2] ? io : ii];
+                x[i][j] = intr.x[intr.conf[3] ? ii : io];
+                z[i][j] = tr.data[ii];
+                ans[i][j] = 0;
+            end
+        end
+
+        for(int i=0; i<=W; i++) begin
+            for(int j=0; j<=W; j++) begin
+                for(int k=0; k<=W; k++) begin
+                    ans[i][j] += w[i][k] * x[k][j];
                 end
             end
-            if(tr.clearMult[i] != intr.clearMult) begin
+        end
+
+        for(int i=0; i<=W; i++) begin
+            for(int j=0; j<=W; j++) begin
+                if(ans[i][j] != z[i][j]) begin
+                    `uvm_error(get_name(), $sformatf("Matrix mismatch at %d, %d: expected %h, get%h",i,j, ans[i][j], z[i][j]));
+                end
+            end
+            if(tr.clear[i] != intr.clear) begin
                 `uvm_error(get_name(), $sformatf("ClearMult mismatch at %d",i));
             end
         end
