@@ -50,7 +50,7 @@
 		output [W:0] b_out
 	);
 
-    wire relu = conf[1];
+    reg relu;
     wire wt = conf[2];
     wire xt = conf[3];
 
@@ -79,8 +79,10 @@
 	always @(posedge clk) begin
 		if(reset) begin
 			clear_out <= 0;
+			relu <= 0;
 		end else if(enable) begin
 			clear_out <= clear_out_pre;
+			relu <= conf[1];
 		end
 	end
 

@@ -41,11 +41,12 @@ class MultScoreboard #(W=7) extends uvm_scoreboard;
             for(int j=0; j<=W; j++) begin
                 ii = i*(W+1)+j;
                 if(intr.data[ii] != tr.data[ii]) begin
+                    `uvm_error(get_name(), $sformatf("Matrix mismatch at [%0d,%0d]: expected %h, get %h. conf = %b", i, j, intr.data[ii], tr.data[ii], intr.conf));
                     error = 1;
                 end
             end
             if(tr.clear[i] != intr.clear[i]) begin
-                `uvm_error(get_name(), $sformatf("ClearMult mismatch at %d",i));
+                `uvm_error(get_name(), $sformatf("ClearMult mismatch at %0d",i));
             end
         end
         if(error) begin 
@@ -55,26 +56,11 @@ class MultScoreboard #(W=7) extends uvm_scoreboard;
         end
     endfunction
 
-    /*
-    
-    000x: 17 - 0
-    001x: 24 - 0
-    010x: 0 - 14
-    011x: 0 - 13
-    100x: 0 - 21
-    101x: 0 - 33
-    110x: 43 - 3
-    111x: 82 - 6
-    
-    */
-
     virtual function void report_phase(uvm_phase phase);
         int i;
-        bit[2:0] conf;
         super.report_phase(phase);
         for(i=0; i<8; i++) begin
-            conf = i[2:0];
-            `uvm_info(get_name(), $sformatf("conf = %b has %d passed, %d failed", conf, pass[i], fail[i]), UVM_LOW)
+            `uvm_info(get_name(), $sformatf("conf = %.3b has %0d passed, %0d failed", i, pass[i], fail[i]), UVM_LOW)
         end
     endfunction
 

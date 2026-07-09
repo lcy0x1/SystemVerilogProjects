@@ -25,8 +25,8 @@ class MultInputTransaction #(W=7) extends uvm_sequence_item;
     bit clear;
     int delay;
 
-    constraint matw {foreach (w[i]) { w[i] inside {[0:255]}; } }
-    constraint matx {foreach (x[i]) { x[i] inside {[0:255]}; } }
+    constraint matw {foreach (w[i]) { w[i] inside {[-255:255]}; } }
+    constraint matx {foreach (x[i]) { x[i] inside {[-255:255]}; } }
 
     `uvm_object_param_utils_begin(MultInputTransaction#(W))
         `uvm_field_sarray_int(w, UVM_ALL_ON)
