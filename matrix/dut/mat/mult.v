@@ -50,7 +50,8 @@
 		output [W:0] b_out
 	);
 
-    reg relu;
+    reg relu_flag;
+	reg [W:0] relu_en;
     wire wt = conf[2];
     wire xt = conf[3];
 
@@ -79,10 +80,16 @@
 	always @(posedge clk) begin
 		if(reset) begin
 			clear_out <= 0;
-			relu <= 0;
+			relu_en <= 0;
+			relu_flag <= 0;
 		end else if(enable) begin
 			clear_out <= clear_out_pre;
-			relu <= conf[1];
+			if(en) begin
+				relu_flag <= conf[1];
+			end else if(clear_out_pre[W])begin
+				relu_flag <= 0;
+			end
+			relu_en <= {relu_en[W-1:0], relu_flag} & (relu_en | clear_out_pre);
 		end
 	end
 
@@ -90,7 +97,7 @@
     generate
 		for(i=0; i<=W; i=i+1) begin
 			relu ri(y_out[i], a_out[i], b_out[i]);
-			assign z_out[i] = relu ? a_out[i] : y_out[i];
+			assign z_out[i] = relu_en[i] ? a_out[i] : y_out[i];
 			for(j=0; j<=W; j=j+1) begin
 				wire [31:0] iwi, ixi, iyi;
 				wire ici, ish;

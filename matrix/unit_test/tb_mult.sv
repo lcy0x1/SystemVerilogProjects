@@ -39,8 +39,8 @@ module tb_mult();
 		$dumpvars;
 		for(i=0;i<8;i++) begin
 			for(j=0;j<8;j++) begin
-				w[i][j]=(i*8+j+1)%5;
-				x[i][j]=(i*8+j+1)%7;
+				w[i][j]=(i*8+j+1)%5-2;
+				x[i][j]=(i*8+j+1)%7-2;
 			end
 			x_in[i] = 0;
 			w_in[i] = 0;
@@ -57,7 +57,7 @@ module tb_mult();
 		reset = 0;
 		enable = 1;
 		#(CLK);
-		conf = 0;
+		conf = 4'b0010;
 		en = 1;
 		#(CLK);
 		en = 0;
