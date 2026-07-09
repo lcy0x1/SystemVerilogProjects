@@ -1,7 +1,6 @@
 `include "dut/calc/calc.v"
 `include "dut/mat/mac.v"
 `include "dut/mat/mult.v"
-`include "dut/mat/trans.v"
 `include "dut/mat/transpose.v"
 
 module tb_mult();
@@ -57,6 +56,27 @@ module tb_mult();
 		reset = 0;
 		enable = 1;
 		#(CLK);
+		conf = 4'b0010;
+		en = 1;
+		#(CLK);
+		en = 0;
+		for(int t=0;t<=15;t++) begin
+			for(i=0;i<8;i++) begin
+				j = t-i;
+				if(t>=i && j<8) begin
+					x_in[i]=x[i][j];
+					w_in[i]=w[i][j];
+				end else begin
+					x_in[i] = 0;
+					w_in[i] = 0;
+				end
+				clear_in[i] = j == 7;
+			end
+			#(CLK);
+		end
+		#(CLK*6)
+
+		#(CLK)
 		conf = 4'b0010;
 		en = 1;
 		#(CLK);

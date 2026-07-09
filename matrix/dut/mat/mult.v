@@ -86,10 +86,10 @@
 			clear_out <= clear_out_pre;
 			if(en) begin
 				relu_flag <= conf[1];
-			end else if(clear_out_pre[W])begin
+			end else if(clear_out_pre[0])begin
 				relu_flag <= 0;
 			end
-			relu_en <= {relu_en[W-1:0], relu_flag} & (relu_en | clear_out_pre);
+			relu_en <= {relu_en[W-1:0], clear_out_pre[0] && relu_flag || relu_en[0] && !relu_en[W]} & (relu_en | clear_out_pre);
 		end
 	end
 

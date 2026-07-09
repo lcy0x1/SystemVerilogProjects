@@ -39,7 +39,7 @@ class MultInputTransaction #(W=7) extends uvm_sequence_item;
     function new(string name = "input");
         super.new(name);
         clear = 1;
-        delay = W;
+        delay = W-1;
         conf = 0;
     endfunction
 

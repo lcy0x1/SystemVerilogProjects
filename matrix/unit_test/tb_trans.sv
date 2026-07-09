@@ -1,4 +1,3 @@
-`include "dut/mat/trans.v"
 `include "dut/mat/transpose.v"
 
 module tb_trans();

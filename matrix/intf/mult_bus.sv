@@ -26,11 +26,3 @@ module mult_wrapper #(P=2, W=((1<<(P+1))-1)) (
 mult #(P, W) dut(bus.clk, bus.reset, bus.enable, bus.en, bus.conf, bus.x_in, bus.w_in, bus.clear_in, bus.z_out, bus.clear_out, bus.b_out);
 
 endmodule
-
-module mult_reference #(W=7) (
-    mult_bus.dut bus
-);
-
-m8x8 dut(bus.clk, bus.reset, bus.enable, bus.en, bus.conf, bus.x_in, bus.w_in, bus.clear_in, bus.z_out, bus.clear_out, bus.b_out);
-
-endmodule

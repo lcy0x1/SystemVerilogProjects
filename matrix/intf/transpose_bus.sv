@@ -24,11 +24,3 @@ module transpose_wrapper #(P=2, W=((1<<(P+1))-1)) (
 transpose #(P, W) dut(bus.clk, bus.enable, bus.reset, bus.do_transpose, bus.x_in, bus.en, bus.z_out, bus.in_mult_clear, bus.out_mult_clear, bus.valid);
 
 endmodule
-
-module transpose_reference #(W=7) (
-    transpose_bus.dut bus
-);
-
-t8x8 dut(bus.clk, bus.enable, bus.reset, bus.do_transpose, bus.x_in, bus.en, bus.z_out, bus.in_mult_clear, bus.out_mult_clear, bus.valid);
-
-endmodule

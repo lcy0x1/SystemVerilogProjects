@@ -1,8 +1,6 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-`include "dut/mat/trans.v"
 `include "dut/mat/transpose.v"
-`include "dut/mat/transpose_ref.v"
 `include "intf/transpose_bus.sv"
 `include "uvm/transpose/transaction.sv"
 `include "uvm/transpose/driver.sv"
@@ -29,7 +27,6 @@ module tb_top;
 	always #(T/2) clk = ~clk;
 
 	transpose_bus #(W) intf(clk);
-	//transpose_reference #(W) dut(intf.dut);
 	transpose_wrapper #(P, W) dut(intf.dut);
 
 	initial begin

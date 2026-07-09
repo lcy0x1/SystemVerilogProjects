@@ -31,7 +31,6 @@ module tb_top;
 	always #(T/2) clk = ~clk;
 
 	mult_bus #(W) intf(clk);
-	//mult_reference #(W) dut(intf.dut);
 	mult_wrapper #(P, W) dut(intf.dut);
 
 	initial begin
