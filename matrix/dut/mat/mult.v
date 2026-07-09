@@ -51,6 +51,7 @@
 	);
 
     reg relu_flag;
+    reg relu_delay;
 	reg [W:0] relu_en;
     wire wt = conf[2];
     wire xt = conf[3];
@@ -82,14 +83,18 @@
 			clear_out <= 0;
 			relu_en <= 0;
 			relu_flag <= 0;
+			relu_delay <= 0;
 		end else if(enable) begin
 			clear_out <= clear_out_pre;
 			if(en) begin
 				relu_flag <= conf[1];
-			end else if(clear_out_pre[0])begin
+			end else if(clear_in[0]) begin
+				relu_delay <= relu_flag;
 				relu_flag <= 0;
+			end else if(clear_out_pre[0])begin
+				relu_delay <= 0;
 			end
-			relu_en <= {relu_en[W-1:0], clear_out_pre[0] && relu_flag || relu_en[0] && !relu_en[W]} & (relu_en | clear_out_pre);
+			relu_en <= {relu_en[W-1:0], clear_out_pre[0] && relu_delay || relu_en[0] && !relu_en[W]} & (relu_en | clear_out_pre);
 		end
 	end
 

@@ -60,7 +60,7 @@ module tb_mult();
 		en = 1;
 		#(CLK);
 		en = 0;
-		for(int t=0;t<=15;t++) begin
+		for(int t=0;t<=14;t++) begin
 			for(i=0;i<8;i++) begin
 				j = t-i;
 				if(t>=i && j<8) begin
@@ -74,9 +74,9 @@ module tb_mult();
 			end
 			#(CLK);
 		end
-		#(CLK*2)
-
-		#(CLK)
+		x_in[7] = 0;
+		w_in[7] = 0;
+		clear_in = 0;
 		conf = 4'b0010;
 		en = 1;
 		#(CLK);

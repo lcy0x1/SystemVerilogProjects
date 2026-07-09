@@ -60,7 +60,7 @@ class MultDriver #(W=7) extends uvm_driver #(MultInputTransaction#(W));
             vif.en <= 1;
             @(posedge vif.clk);
             vif.en <= 0;
-            for(int t=0; t<=W*2+1; t++) begin
+            for(int t=0; t<=W*2; t++) begin
                 for(i=0; i<=W; i++) begin
                     j = t-i;
                     if(t>=i && j<=W) begin
@@ -74,6 +74,9 @@ class MultDriver #(W=7) extends uvm_driver #(MultInputTransaction#(W));
                 end
                 @(posedge vif.clk);
             end
+            vif.clear_in <= 0;
+            vif.x_in[W] <= 0;
+            vif.w_in[W] <= 0;
             for(int t=0; t<tr.delay; t++) begin
                 @(posedge vif.clk);
             end
