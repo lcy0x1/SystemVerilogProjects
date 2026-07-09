@@ -74,7 +74,7 @@ module tb_mult();
 			end
 			#(CLK);
 		end
-		#(CLK*6)
+		#(CLK*2)
 
 		#(CLK)
 		conf = 4'b0010;
