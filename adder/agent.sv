@@ -1,5 +1,5 @@
 class add_agent extends uvm_agent;
-    `uvm_compponent_utils(add_agent)
+    `uvm_component_utils(add_agent)
 
     add_driver m_driver;
     add_monitor m_monitor;
@@ -22,7 +22,7 @@ class add_agent extends uvm_agent;
         super.connect_phase(phase);
         if (get_is_active())
             m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
-        m_monitor.mon_analysis_port.connect(m_coverage.analysis_port);
+      //  m_monitor.mon_analysis_port.connect(m_coverage.analysis_port);
     endfunction
 //  uvm_config_db #(uvm_active_passive_enum)::set(this,"path_to_agent","is_active", UVM_PASSIVE);
 //   uvm_config_db #(uvm_active_passive_enum)::set(this,"path_to_agent","is_active", UVM_ACIVE);
