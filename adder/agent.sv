@@ -18,7 +18,7 @@ class add_agent extends uvm_agent;
         m_monitor = add_monitor::type_id::create("monitor", this);
     endfunction
 
-    virtual function void connect_phase(uvm_phase phase)
+    virtual function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
         if (get_is_active())
             m_driver.seq_item_port.connect(m_sequencer.seq_item_export);

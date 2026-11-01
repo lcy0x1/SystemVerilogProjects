@@ -7,6 +7,10 @@ fifo:
 run_fifo:
 	./obj_dir/Vtb_fifo
 
+.PHONY: adder_uvm
+adder_uvm:
+	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+adder tb.sv --top-module tb_top
+
 .PHONY: fifo_uvm
 fifo_uvm:
 	OBJCACHE=ccache verilator -j 8 $(FLAGS) $(UVM) +incdir+async_fifo uvm/tb_top.sv --top-module tb_top --debug --coverage-user

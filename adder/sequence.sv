@@ -1,5 +1,5 @@
-class add_sequence extends uvm_seqeunce #(add_transation);
-    `uvm_object_utils(adder_sequence)                                  
+class add_sequence extends uvm_sequence #(add_transaction);
+    `uvm_object_utils(add_sequence)                                  
     
     function new(string name="add_sequence");
         super.new(name);
@@ -14,6 +14,5 @@ class add_sequence extends uvm_seqeunce #(add_transation);
         finish_item(req);
     end
     endtask
-
 
 endclass
