@@ -16,15 +16,16 @@ class add_driver extends uvm_driver #(add_transaction);
     virtual task run_phase(uvm_phase phase);
         add_transaction tr;
         forever begin
-        @(vif.drv_cb)
-        seq_item_port.get_next_item(tr);
-        vif.drv_cb.a <= tr.a ;
-        vif.drv_cb.b <= tr.b;
-        vif.drv_cb.en <= 1;
-        @(vif.drv_cb)
-        vif.drv_cb.en <= 0;
-        seq_item_port.item_done();
-     end
+            @(vif.drv_cb)
+            seq_item_port.get_next_item(tr);
+            vif.drv_cb.en <= 1;
+            vif.drv_cb.a <= tr.a;
+            vif.drv_cb.b <= tr.b;
+
+            @(vif.drv_cb)
+            vif.drv_cb.en <= 0;
+            seq_item_port.item_done();
+        end
     endtask
 
 endclass

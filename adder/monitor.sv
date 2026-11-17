@@ -18,7 +18,9 @@ class add_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
     add_transaction tr;
     forever begin
+
         @(vif.mon_cb)
+        `uvm_info(get_name(), $sformatf("en=%0d, a=%0d, b=%0d", vif.mon_cb.en, vif.mon_cb.a, vif.mon_cb.b), UVM_LOW)
         if(vif.mon_cb.en) begin
             tr = add_transaction::type_id::create("tr", this);
             tr.a=vif.mon_cb.a;

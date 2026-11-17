@@ -5,7 +5,7 @@ interface adder_if ();
     logic clk, en;
 
     clocking drv_cb @(posedge clk);
-      default input #1step output #1ns ;
+      default input #1step output #1step ;
       input y;
       output a,b,en;
     endclocking
